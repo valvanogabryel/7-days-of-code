@@ -1,0 +1,30 @@
+@import url(reset.css);
+@import url(header.css);
+@import url(form.css);
+@import url(movies.css);
+@import url("https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;600;700&display=swap");
+
+:root {
+    --background: #17162e;
+    --card-background: #1d1c3b;
+    --primary-color: #fff;
+    --secondary-color: #454558;
+    --terciary-color: #acacac;
+    --font: "Kumbh Sans", sans-serif;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--background);
+    color: var(--primary-color);
+    font-family: var(--font);
+}
+
+::-webkit-scrollbar {
+    opacity: 0;
+}
