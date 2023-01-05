@@ -28,19 +28,19 @@
 
 @media screen and (min-width: 1441px) {
     .container__form--search {
-        padding: 1.6rem 1.5rem;
+        padding: 1.3rem 1.25rem;
     }
 
     .container__form--search::placeholder {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 
     .container__form--favorites--input {
-        transform: scale(2);
+        transform: scale(1.1);
     }
 
     .container__form--favorites {
-        font-size: 2rem;
-        gap: 1rem;
+        font-size: 1.1rem;
+        gap: 0.4rem;
     }
 }

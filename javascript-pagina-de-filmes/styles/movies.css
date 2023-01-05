@@ -77,10 +77,10 @@
     }
 
     .movie__card--title {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 
     .movie__card--description {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
     }
 }
