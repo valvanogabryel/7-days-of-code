@@ -17,11 +17,12 @@
 
 .movie__card--image {
     width: 204.33px;
-    height: 153.25px;
+    height: auto;
     border-radius: 50%;
     margin: 0 1rem;
     object-fit: cover;
     box-shadow: 20px 15px 15px rgba(0, 0, 0, 0.259);
+    transform: scale(0.8);
 }
 
 .movie__card--informations {

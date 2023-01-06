@@ -1,8 +1,10 @@
+import { API_key } from '../environment/key.js';
+
 async function getMovies() {
-    const url = 'https://api.themoviedb.org/3/movie/550?api_key=751799e0dc883576b6b755416df283ab';
+    const url = `https://api.themoviedb.org/3/movie/popular?api_key=${API_key}&language=en-US&page=1`;
     const response = await fetch(url);
-    const movies = await response.json();
-    return movies
+    const { results } = await response.json();
+    return results;
 }
 
-console.log(getMovies());
+export default getMovies;

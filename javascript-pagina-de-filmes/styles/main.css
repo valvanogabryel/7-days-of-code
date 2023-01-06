@@ -28,3 +28,7 @@ body {
 ::-webkit-scrollbar {
     opacity: 0;
 }
+
+button {
+    cursor: pointer;
+}
