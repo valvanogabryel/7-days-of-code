@@ -7,4 +7,6 @@ async function getMovies() {
     return results;
 }
 
+
+
 export default getMovies;

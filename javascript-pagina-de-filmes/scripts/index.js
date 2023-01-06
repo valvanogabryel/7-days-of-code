@@ -16,6 +16,7 @@ function configMovie(movie) {
 }
 
 function renderMovie(image, title, releaseYear, rating, overview, isFavorite) {
+
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
     movieElement.dataset.card = '';
@@ -27,7 +28,7 @@ function renderMovie(image, title, releaseYear, rating, overview, isFavorite) {
                          <h2 class="movie__card--title">${title} ${releaseYear}</h2>
                          <div class="movie__card--info--content">
                             <p class="movie__card--rating">${rating}</p>
-                        <button class="movie__card--favorite-${verifyFavorite(isFavorite)}">Favoritar</button>
+                        <button class="${verifyFavorite(isFavorite)}" data-favorite-button>Favoritar</button>
                          </div>
                     </div>
 
@@ -35,17 +36,20 @@ function renderMovie(image, title, releaseYear, rating, overview, isFavorite) {
                 </div>
 `
     movieSection.appendChild(movieElement);
-}
 
+    const favoriteButtons = document.querySelectorAll('[data-favorite-button]');
+    favoriteButtons.forEach(btn => {
+        btn.addEventListener('click', (event) => {
+            favoriteMovie(event.target)
+        })
 
-function favoriteMovie() {
-
+    })
 }
 
 function verifyFavorite(isFavorite) {
     if (isFavorite) {
-        return 'checked';
+        return 'movie__card--favorite-checked';
     } else {
-        return 'unchecked';
+        return 'movie__card--favorite-unchecked';
     }
 }
