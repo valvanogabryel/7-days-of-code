@@ -46,8 +46,7 @@
     color: var(--terciary-color);
 }
 
-.movie__card--favorite-checked,
-.movie__card--favorite-unchecked,
+.movie__card--favorite,
 .movie__card--rating {
     display: flex;
     align-items: center;
@@ -60,12 +59,12 @@
     content: url(../img/icons/rating-icon.svg);
 }
 
-.movie__card--favorite-checked::before {
-    content: url(../img/icons/favorite-icon__checked.svg);
+.movie__card--favorite.unchecked::before {
+    content: url(../img/icons/favorite-icon__unchecked.svg);
 }
 
-.movie__card--favorite-unchecked::before {
-    content: url(../img/icons/favorite-icon__unchecked.svg);
+.movie__card--favorite::before {
+    content: url(../img/icons/favorite-icon__checked.svg);
 }
 
 @media screen and (min-width: 1441px) {
