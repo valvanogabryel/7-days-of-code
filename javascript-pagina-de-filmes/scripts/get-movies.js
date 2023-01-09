@@ -14,5 +14,9 @@ async function getMovieByName(title) {
     return results;
 }
 
+function getFavoriteMovies() {
+    return JSON.parse(localStorage.getItem('favoriteMovies'));
+}
 
-export { getPopularMovies, getMovieByName };
+
+export { getPopularMovies, getMovieByName, getFavoriteMovies };

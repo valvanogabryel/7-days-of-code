@@ -1,4 +1,4 @@
-import { getPopularMovies, getMovieByName } from "./get-movies.js";
+import { getPopularMovies, getMovieByName, getFavoriteMovies } from "./get-movies.js";
 
 const pageTitle = document.querySelector('[data-page-title]');
 
@@ -6,7 +6,14 @@ const movieSection = document.querySelector('[data-movie-section]');
 
 const checkmark = document.querySelector('#onlyFavorites');
 checkmark.addEventListener('change', function () {
-    if (this.checked) { filterFavorites() };
+    if (this.checked) {
+        clearMovies();
+        const movies = getFavoriteMovies() || [];
+        movies.forEach(movie => renderFavoriteMovies(movie));
+    } else {
+        clearMovies();
+        resetPopular();
+    }
 })
 
 const searchElement = document.querySelector('[data-search]');
@@ -16,8 +23,9 @@ formElement.addEventListener('submit', (event) => {
     searchMovie();
 })
 
-function getFavoriteMovies() {
-    return JSON.parse(localStorage.getItem('favoriteMovies'));
+async function resetPopular() {
+    let movies = await getPopularMovies();
+    movies.forEach(movie => { configMovie(movie) });
 }
 
 function favoriteItem(movie) {
@@ -72,7 +80,31 @@ function renderMovie(image, title, releaseYear, rating, overview, id) {
             handleFavoriteButton(event.currentTarget, movies, id);
         })
     })
+
+
 }
+
+function renderFavoriteMovies(favoriteMovie) {
+    const favoriteMoviesElements = document.createElement('div');
+    favoriteMoviesElements.className = 'movie__card';
+    favoriteMoviesElements.dataset.card = '';
+    favoriteMoviesElements.innerHTML =
+        `
+        <img src="${favoriteMovie[0]}" alt="${favoriteMovie[1]} poster" class="movie__card--image">
+        <div class="movie__card--informations">
+        <div class="movie__card--info">
+        <h2 class="movie__card--title">${favoriteMovie[1]} ${favoriteMovie[2]}</h2>
+        <div class="movie__card--info--content">
+        <p class="movie__card--rating">${favoriteMovie[3]}</p>
+        <button class="movie__card--favorite" data-favorite-button>Favoritar</button>
+        </div>
+        </div>
+        <p class="movie__card--description">${favoriteMovie[4]}</p>
+        </div>
+        `
+    movieSection.appendChild(favoriteMoviesElements);
+}
+
 
 async function searchMovie() {
     const searchValue = searchElement.value;
@@ -98,9 +130,4 @@ function handleFavoriteButton(button, movie, id) {
     if (button.classList.contains('unchecked')) {
         unfavoriteItem(id);
     }
-}
-
-function filterFavorites() {
-    const favoriteMovies = getFavoriteMovies() || [];
-    configMovie(favoriteMovies);
 }
