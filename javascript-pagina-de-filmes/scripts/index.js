@@ -4,6 +4,8 @@ const pageTitle = document.querySelector('[data-page-title]');
 
 const movieSection = document.querySelector('[data-movie-section]');
 
+let isFavorite = false;
+
 const checkmark = document.querySelector('#onlyFavorites');
 checkmark.addEventListener('change', function () {
     if (this.checked) {
@@ -30,6 +32,7 @@ async function resetPopular() {
 
 function favoriteItem(movie) {
     const movies = getFavoriteMovies() || [];
+    isFavorite = true;
     movies.push(movie);
     const moviesJSON = JSON.stringify(movies);
     localStorage.setItem('favoriteMovies', moviesJSON);
@@ -37,6 +40,7 @@ function favoriteItem(movie) {
 
 function unfavoriteItem(id) {
     const movies = getFavoriteMovies() || [];
+    isFavorite = false;
     const findMovie = movies.find(movie => movie[5] == id);
     const newMovies = movies.filter(movie => movie[5] != findMovie[5]);
     localStorage.setItem('favoriteMovies', JSON.stringify(newMovies));
@@ -44,7 +48,7 @@ function unfavoriteItem(id) {
 
 window.addEventListener('load', async () => {
     let movies = await getPopularMovies();
-    movies.forEach(movie => { configMovie(movie) })
+    movies.forEach(movie => configMovie(movie));
 })
 
 function configMovie(movie) {
@@ -55,7 +59,8 @@ function configMovie(movie) {
 }
 
 function renderMovie(image, title, releaseYear, rating, overview, id) {
-    let movies = [image, title, releaseYear, rating, overview, id];
+    let movies = [image, title, releaseYear, rating, overview, id, isFavorite];
+
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
     movieElement.dataset.card = '';
@@ -80,8 +85,6 @@ function renderMovie(image, title, releaseYear, rating, overview, id) {
             handleFavoriteButton(event.currentTarget, movies, id);
         })
     })
-
-
 }
 
 function renderFavoriteMovies(favoriteMovie) {
@@ -104,7 +107,6 @@ function renderFavoriteMovies(favoriteMovie) {
         `
     movieSection.appendChild(favoriteMoviesElements);
 }
-
 
 async function searchMovie() {
     const searchValue = searchElement.value;
