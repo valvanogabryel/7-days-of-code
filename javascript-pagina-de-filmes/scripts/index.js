@@ -13,23 +13,44 @@ formElement.addEventListener('submit', (event) => {
 
 let isFavorite = false;
 
+function getFavoriteMovies() {
+    return JSON.parse(localStorage.getItem('favoriteMovies'))
+}
+
+function favoriteItem(movie) {
+    const movies = getFavoriteMovies() || []
+    movies.push(movie)
+    const moviesJSON = JSON.stringify(movies)
+    localStorage.setItem('favoriteMovies', moviesJSON)
+}
+
+function checkIfMovieIsFavorited(id) {
+    const movies = getFavoriteMovies() || []
+    return movies.find(movie => movie.id == id)
+}
+
+function unfavoriteItem(id) {
+    const movies = getFavoriteMovies() || []
+    const findMovie = movies.find(movie => movie.id == id)
+    const newMovies = movies.filter(movie => movie.id != findMovie.id)
+    localStorage.setItem('favoriteMovies', JSON.stringify(newMovies))
+}
+
+
 window.addEventListener('load', async () => {
     let movies = await getPopularMovies();
+    //(movies);
     movies.forEach(movie => { configMovie(movie) })
 })
 
 function configMovie(movie) {
-    const { poster_path, title, vote_average, release_date, overview } = movie;
+    const { poster_path, title, vote_average, release_date, overview, id } = movie;
     const releaseYear = new Date(release_date).getFullYear();
     const image = `https://image.tmdb.org/t/p/w500${poster_path}`
-
-    renderMovie(image, title, releaseYear, vote_average, overview);
-
-
+    renderMovie(image, title, releaseYear, vote_average, overview, id);
 }
 
-
-function renderMovie(image, title, releaseYear, rating, overview) {
+function renderMovie(image, title, releaseYear, rating, overview, id) {
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
     movieElement.dataset.card = '';
@@ -51,7 +72,7 @@ function renderMovie(image, title, releaseYear, rating, overview) {
 
     movieElement.querySelectorAll('[data-favorite-button]').forEach(button => {
         button.addEventListener('click', (event) => {
-            handleFavoriteButton(event.currentTarget)
+            handleFavoriteButton(event.currentTarget, movieElement, id);
         })
     })
 }
@@ -73,12 +94,14 @@ async function searchMovie() {
 
 function clearMovies() { document.querySelector('[data-movie-section]').innerHTML = '' };
 
-function handleFavoriteButton(button, movie) {
+function handleFavoriteButton(button, movie, id) {
     button.classList.toggle('unchecked');
-    isFavorite = true;
+    favoriteItem(movie);
 
     if (button.classList.contains('unchecked')) {
-        isFavorite = false;
-        console.log(isFavorite);
+        unfavoriteItem(id);
     }
 }
+
+
+
