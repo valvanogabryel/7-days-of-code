@@ -24,13 +24,10 @@ function favoriteItem(movie) {
 
 function unfavoriteItem(id) {
     const movies = getFavoriteMovies() || []
-    for (let i = 0; i < movies.length; i++) {
-        console.log(movies[i][1])
-    }
 
-    const findMovie = movies.find(movie => movie[1] == id)
+    const findMovie = movies.find(movie => movie.id == id)
     const newMovies = movies.filter(movie => movie.id != findMovie)
-    localStorage.removeItem('favoriteMovies', JSON.stringify(newMovies))
+    localStorage.setItem('favoriteMovies', JSON.stringify(newMovies))
 }
 
 window.addEventListener('load', async () => {
