@@ -3,6 +3,12 @@ import { getPopularMovies, getMovieByName } from "./get-movies.js";
 const pageTitle = document.querySelector('[data-page-title]');
 
 const movieSection = document.querySelector('[data-movie-section]');
+
+const checkmark = document.querySelector('#onlyFavorites');
+checkmark.addEventListener('change', function () {
+    if (this.checked) { filterFavorites() };
+})
+
 const searchElement = document.querySelector('[data-search]');
 const formElement = document.querySelector('[data-form]');
 formElement.addEventListener('submit', (event) => {
@@ -11,23 +17,21 @@ formElement.addEventListener('submit', (event) => {
 })
 
 function getFavoriteMovies() {
-    return JSON.parse(localStorage.getItem('favoriteMovies'))
+    return JSON.parse(localStorage.getItem('favoriteMovies'));
 }
 
 function favoriteItem(movie) {
     const movies = getFavoriteMovies() || [];
-    console.log(movie)
     movies.push(movie);
     const moviesJSON = JSON.stringify(movies);
     localStorage.setItem('favoriteMovies', moviesJSON);
 }
 
 function unfavoriteItem(id) {
-    const movies = getFavoriteMovies() || []
-
-    const findMovie = movies.find(movie => movie.id == id)
-    const newMovies = movies.filter(movie => movie.id != findMovie)
-    localStorage.setItem('favoriteMovies', JSON.stringify(newMovies))
+    const movies = getFavoriteMovies() || [];
+    const findMovie = movies.find(movie => movie[5] == id);
+    const newMovies = movies.filter(movie => movie[5] != findMovie[5]);
+    localStorage.setItem('favoriteMovies', JSON.stringify(newMovies));
 }
 
 window.addEventListener('load', async () => {
@@ -43,7 +47,7 @@ function configMovie(movie) {
 }
 
 function renderMovie(image, title, releaseYear, rating, overview, id) {
-    let movies = [title, id];
+    let movies = [image, title, releaseYear, rating, overview, id];
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
     movieElement.dataset.card = '';
@@ -96,5 +100,7 @@ function handleFavoriteButton(button, movie, id) {
     }
 }
 
-
-
+function filterFavorites() {
+    const favoriteMovies = getFavoriteMovies() || [];
+    configMovie(favoriteMovies);
+}
