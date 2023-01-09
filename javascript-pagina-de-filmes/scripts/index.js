@@ -9,37 +9,32 @@ formElement.addEventListener('submit', (event) => {
     event.preventDefault();
     searchMovie();
 })
-// const checkbox = document.getElementById('onlyFavorites');
-
-let isFavorite = false;
 
 function getFavoriteMovies() {
     return JSON.parse(localStorage.getItem('favoriteMovies'))
 }
 
 function favoriteItem(movie) {
-    const movies = getFavoriteMovies() || []
-    movies.push(movie)
-    const moviesJSON = JSON.stringify(movies)
-    localStorage.setItem('favoriteMovies', moviesJSON)
-}
-
-function checkIfMovieIsFavorited(id) {
-    const movies = getFavoriteMovies() || []
-    return movies.find(movie => movie.id == id)
+    const movies = getFavoriteMovies() || [];
+    console.log(movie)
+    movies.push(movie);
+    const moviesJSON = JSON.stringify(movies);
+    localStorage.setItem('favoriteMovies', moviesJSON);
 }
 
 function unfavoriteItem(id) {
     const movies = getFavoriteMovies() || []
-    const findMovie = movies.find(movie => movie.id == id)
-    const newMovies = movies.filter(movie => movie.id != findMovie.id)
-    localStorage.setItem('favoriteMovies', JSON.stringify(newMovies))
-}
+    for (let i = 0; i < movies.length; i++) {
+        console.log(movies[i][1])
+    }
 
+    const findMovie = movies.find(movie => movie[1] == id)
+    const newMovies = movies.filter(movie => movie.id != findMovie)
+    localStorage.removeItem('favoriteMovies', JSON.stringify(newMovies))
+}
 
 window.addEventListener('load', async () => {
     let movies = await getPopularMovies();
-    //(movies);
     movies.forEach(movie => { configMovie(movie) })
 })
 
@@ -51,6 +46,7 @@ function configMovie(movie) {
 }
 
 function renderMovie(image, title, releaseYear, rating, overview, id) {
+    let movies = [title, id];
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
     movieElement.dataset.card = '';
@@ -72,7 +68,7 @@ function renderMovie(image, title, releaseYear, rating, overview, id) {
 
     movieElement.querySelectorAll('[data-favorite-button]').forEach(button => {
         button.addEventListener('click', (event) => {
-            handleFavoriteButton(event.currentTarget, movieElement, id);
+            handleFavoriteButton(event.currentTarget, movies, id);
         })
     })
 }
