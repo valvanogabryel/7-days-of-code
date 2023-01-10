@@ -43,6 +43,12 @@ function configMovie(movie) {
 
 function renderMovie(image, title, releaseYear, rating, overview, id, isFavorite) {
     let movies = [image, title, releaseYear, rating, overview, id, isFavorite];
+    let favs = getFavoriteMovies() || [];
+    for (let fav of favs) {
+        if (movies[5] == fav[5]) {
+            movies[6] = fav[6];
+        }
+    }
 
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
@@ -55,7 +61,7 @@ function renderMovie(image, title, releaseYear, rating, overview, id, isFavorite
                          <h2 class="movie__card--title">${title} ${releaseYear}</h2>
                          <div class="movie__card--info--content">
                             <p class="movie__card--rating">${rating}</p>
-                        <button class="movie__card--favorite " data-favorite-button>Favoritar</button>
+                        <button class="movie__card--favorite ${movies[6] === true ? '' : 'unchecked'}" data-favorite-button>Favoritar</button>
                          </div>
                     </div>
                      <p class="movie__card--description">${overview}</p>
@@ -109,12 +115,11 @@ async function searchMovie() {
 
 function handleFavoriteButton(button, movie, id) {
     button.classList.toggle('unchecked');
-    favoriteItem(movie);
+    favoriteItem(movie, button);
 
     if (button.classList.contains('unchecked')) {
-        unfavoriteItem(id);
+        unfavoriteItem(id, movie);
     }
-
 }
 
 function clearMovies() { document.querySelector('[data-movie-section]').innerHTML = '' };
