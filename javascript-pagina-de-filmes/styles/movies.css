@@ -105,7 +105,7 @@
     }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1000px) {
     .movie__card {
         flex-direction: column;
         max-height: 50rem;
