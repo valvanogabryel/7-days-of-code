@@ -58,7 +58,7 @@ function renderMovie(image, title, releaseYear, rating, overview, id, isFavorite
 <img src="${image}" alt="${title} poster" class="movie__card--image">
                  <div class="movie__card--informations">
                     <div class="movie__card--info">
-                         <h2 class="movie__card--title">${title} ${releaseYear}</h2>
+                         <h2 class="movie__card--title">${title} (${releaseYear})</h2>
                          <div class="movie__card--info--content">
                             <p class="movie__card--rating">${rating}</p>
                         <button class="movie__card--favorite ${movies[6] === true ? '' : 'unchecked'}" data-favorite-button>Favoritar</button>
