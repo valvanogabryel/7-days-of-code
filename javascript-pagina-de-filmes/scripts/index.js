@@ -1,10 +1,9 @@
-import { getPopularMovies, getMovieByName, getFavoriteMovies } from "./get-movies.js";
+import { getPopularMovies, getMovieByName } from "../services/get-movies.js";
+import { favoriteItem, unfavoriteItem, getFavoriteMovies } from "../services/local-storage.js";
 
 const pageTitle = document.querySelector('[data-page-title]');
 
 const movieSection = document.querySelector('[data-movie-section]');
-
-let isFavorite = false;
 
 const checkmark = document.querySelector('#onlyFavorites');
 checkmark.addEventListener('change', function () {
@@ -30,22 +29,6 @@ async function resetPopular() {
     movies.forEach(movie => { configMovie(movie) });
 }
 
-function favoriteItem(movie) {
-    const movies = getFavoriteMovies() || [];
-    isFavorite = true;
-    movies.push(movie);
-    const moviesJSON = JSON.stringify(movies);
-    localStorage.setItem('favoriteMovies', moviesJSON);
-}
-
-function unfavoriteItem(id) {
-    const movies = getFavoriteMovies() || [];
-    isFavorite = false;
-    const findMovie = movies.find(movie => movie[5] == id);
-    const newMovies = movies.filter(movie => movie[5] != findMovie[5]);
-    localStorage.setItem('favoriteMovies', JSON.stringify(newMovies));
-}
-
 window.addEventListener('load', async () => {
     let movies = await getPopularMovies();
     movies.forEach(movie => configMovie(movie));
@@ -59,7 +42,7 @@ function configMovie(movie) {
 }
 
 function renderMovie(image, title, releaseYear, rating, overview, id) {
-    let movies = [image, title, releaseYear, rating, overview, id, isFavorite];
+    let movies = [image, title, releaseYear, rating, overview, id];
 
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';

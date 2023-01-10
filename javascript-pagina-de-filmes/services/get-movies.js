@@ -14,7 +14,7 @@ async function getMovieByName(title) {
     return results;
 }
 
-
-
-
-export { getPopularMovies, getMovieByName };
+export {
+    getPopularMovies,
+    getMovieByName
+};
