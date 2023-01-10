@@ -44,3 +44,31 @@
         gap: 0.4rem;
     }
 }
+
+@media screen and (max-width: 725px) {
+    .container__form > form {
+        width: 100%;
+    }
+
+    .container__form--search {
+        width: 80vw;
+    }
+
+    .container__form--search::placeholder {
+        font-size: 1rem;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .container__form > form {
+        width: 100%;
+    }
+
+    .container__form--search {
+        width: 90vw;
+    }
+
+    .container__form--search::placeholder {
+        font-size: 0.8rem;
+    }
+}
