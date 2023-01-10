@@ -5,6 +5,8 @@ const pageTitle = document.querySelector('[data-page-title]');
 
 const movieSection = document.querySelector('[data-movie-section]');
 
+let isFavorite = false;
+
 const checkmark = document.querySelector('#onlyFavorites');
 checkmark.addEventListener('change', function () {
     if (this.checked) {
@@ -43,6 +45,8 @@ function configMovie(movie) {
 
 function renderMovie(image, title, releaseYear, rating, overview, id) {
     let movies = [image, title, releaseYear, rating, overview, id];
+    console.log(isFavorite)
+
 
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
@@ -55,7 +59,7 @@ function renderMovie(image, title, releaseYear, rating, overview, id) {
                          <h2 class="movie__card--title">${title} ${releaseYear}</h2>
                          <div class="movie__card--info--content">
                             <p class="movie__card--rating">${rating}</p>
-                        <button class="movie__card--favorite unchecked" data-favorite-button>Favoritar</button>
+                        <button class="movie__card--favorite ${isFavorite === true ? '' : 'unchecked'}" data-favorite-button>Favoritar</button>
                          </div>
                     </div>
                      <p class="movie__card--description">${overview}</p>
@@ -95,9 +99,10 @@ async function searchMovie() {
     const searchValue = searchElement.value;
     if (searchValue != '') {
         clearMovies();
+
         let movies = await getMovieByName(searchValue);
         pageTitle.innerHTML = `Resultados de acordo com a pesquisa: ${searchValue}`
-        movies.forEach(movie => { configMovie(movie) })
+        movies.forEach(movie => { configMovie(movie) });
     } else {
         pageTitle.innerHTML = 'Campo de pesquisa vazio.'
         setTimeout(() => {
@@ -106,13 +111,25 @@ async function searchMovie() {
     }
 }
 
-function clearMovies() { document.querySelector('[data-movie-section]').innerHTML = '' };
-
 function handleFavoriteButton(button, movie, id) {
     button.classList.toggle('unchecked');
     favoriteItem(movie);
+    isFavorite = true;
 
     if (button.classList.contains('unchecked')) {
         unfavoriteItem(id);
+        isFavorite = false;
+    }
+}
+
+function clearMovies() { document.querySelector('[data-movie-section]').innerHTML = '' };
+
+function checkFavorite(isFavorite) {
+    console.log(isFavorite)
+
+    if (isFavorite) {
+        return 'unchecked';
+    } else {
+        return '';
     }
 }
