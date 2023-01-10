@@ -5,8 +5,6 @@ const pageTitle = document.querySelector('[data-page-title]');
 
 const movieSection = document.querySelector('[data-movie-section]');
 
-let isFavorite = false;
-
 const checkmark = document.querySelector('#onlyFavorites');
 checkmark.addEventListener('change', function () {
     if (this.checked) {
@@ -37,16 +35,14 @@ window.addEventListener('load', async () => {
 })
 
 function configMovie(movie) {
-    const { poster_path, title, vote_average, release_date, overview, id } = movie;
+    const { poster_path, title, vote_average, release_date, overview, id, isFavorite = false } = movie;
     const releaseYear = new Date(release_date).getFullYear();
     const image = `https://image.tmdb.org/t/p/w500${poster_path}`
-    renderMovie(image, title, releaseYear, vote_average, overview, id);
+    renderMovie(image, title, releaseYear, vote_average, overview, id, isFavorite);
 }
 
-function renderMovie(image, title, releaseYear, rating, overview, id) {
-    let movies = [image, title, releaseYear, rating, overview, id];
-    console.log(isFavorite)
-
+function renderMovie(image, title, releaseYear, rating, overview, id, isFavorite) {
+    let movies = [image, title, releaseYear, rating, overview, id, isFavorite];
 
     const movieElement = document.createElement('div');
     movieElement.className = 'movie__card';
@@ -59,7 +55,7 @@ function renderMovie(image, title, releaseYear, rating, overview, id) {
                          <h2 class="movie__card--title">${title} ${releaseYear}</h2>
                          <div class="movie__card--info--content">
                             <p class="movie__card--rating">${rating}</p>
-                        <button class="movie__card--favorite ${isFavorite === true ? '' : 'unchecked'}" data-favorite-button>Favoritar</button>
+                        <button class="movie__card--favorite " data-favorite-button>Favoritar</button>
                          </div>
                     </div>
                      <p class="movie__card--description">${overview}</p>
@@ -101,12 +97,12 @@ async function searchMovie() {
         clearMovies();
 
         let movies = await getMovieByName(searchValue);
-        pageTitle.innerHTML = `Resultados de acordo com a pesquisa: ${searchValue}`
+        pageTitle.innerHTML = `Resultados de acordo com a pesquisa: ${searchValue}`;
         movies.forEach(movie => { configMovie(movie) });
     } else {
-        pageTitle.innerHTML = 'Campo de pesquisa vazio.'
+        pageTitle.innerHTML = 'Campo de pesquisa vazio.';
         setTimeout(() => {
-            pageTitle.innerHTML = `Busque algum filme.`
+            pageTitle.innerHTML = `Busque algum filme.`;
         }, 1000)
     }
 }
@@ -114,22 +110,11 @@ async function searchMovie() {
 function handleFavoriteButton(button, movie, id) {
     button.classList.toggle('unchecked');
     favoriteItem(movie);
-    isFavorite = true;
 
     if (button.classList.contains('unchecked')) {
         unfavoriteItem(id);
-        isFavorite = false;
     }
+
 }
 
 function clearMovies() { document.querySelector('[data-movie-section]').innerHTML = '' };
-
-function checkFavorite(isFavorite) {
-    console.log(isFavorite)
-
-    if (isFavorite) {
-        return 'unchecked';
-    } else {
-        return '';
-    }
-}
